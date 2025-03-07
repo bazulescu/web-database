@@ -2,6 +2,7 @@ require('dotenv').config();
 
 const express = require('express');
 const { Client } = require('pg');
+const path = require('path');
 const app = express();
 const port = process.env.PORT || 3000;
 
@@ -24,6 +25,13 @@ client.connect()
 
 // Servir archivos estáticos
 app.use(express.static('public'));
+
+app.use(express.static(path.join(__dirname, 'public')));
+
+// Ruta para la raíz del sitio
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
 
 // Ruta para la página principal (listado de empleados)
 app.get('/empleados', (req, res) => {
